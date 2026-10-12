@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <style>
+    :root {
+      --bracket: #0b63e5;
+      --ink: #1b222d;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bracket: #2f81f7;
+        --ink: #f0f6fc;
+      }
+    }
+  </style>
+
+  <!-- Left Bracket < -->
+  <path d="M21 17L8 30l13 13" stroke="var(--bracket)" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- Right Bracket > -->
+  <path d="M43 17L56 30l-13 13" stroke="var(--bracket)" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- Dot of i -->
+  <circle cx="32" cy="10.5" r="3.8" fill="var(--ink)"/>
+
+  <!-- Serif i Body -->
+  <path d="M27 20.8l4.5-2.3h3v21h4v3H25.5v-3h4V23.5L27 20.8z" fill="var(--ink)"/>
+
+  <!-- Open Book Base Curve (shifted down to prevent any overlap) -->
+  <path d="M5 50.5C14 48 23 52 32 58C41 52 50 48 59 50.5" stroke="var(--ink)" stroke-width="4.8" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
