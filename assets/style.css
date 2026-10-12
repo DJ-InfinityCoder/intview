@@ -15,7 +15,8 @@
     --sans: 'Lora', Georgia, serif;
     --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
     --radius: 6px;
-    --header-h: 56px;
+    --header-h: 64px;
+    --gutter: clamp(28px, 4.5vw, 64px);
 }
 
 :root[data-theme=dark] {
@@ -44,8 +45,15 @@ body {
     margin: 0;
     background: var(--bg);
     color: var(--text);
-    font: 15.5px/1.65 var(--sans);
+    font: 15px/1.6 var(--sans);
     letter-spacing: -0.005em;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    flex: 1;
 }
 
 strong, b { font-weight: 500; }
@@ -82,7 +90,7 @@ header {
     display: flex;
     align-items: center;
     gap: 16px;
-    padding: 0 24px;
+    padding: 0 var(--gutter);
     background: var(--bg);
     border-bottom: 1px solid var(--bd);
     z-index: 20;
@@ -406,7 +414,7 @@ header .grow { flex: 1; }
 
 /* ===== Footer ===== */
 footer {
-    padding: 20px 24px;
+    padding: 20px var(--gutter);
     font-size: 13.5px;
     color: var(--muted);
     display: flex;
@@ -414,22 +422,27 @@ footer {
     justify-content: space-between;
     gap: 12px;
     flex-wrap: wrap;
+    border-top: 1px solid var(--bd);
+    background: transparent;
+    margin-top: auto;
 }
 
 footer a { color: var(--muted); text-decoration: none; transition: color 0.15s; }
 footer a:hover { color: var(--text); }
+footer .footer-left strong { color: var(--text); font-weight: 600; }
+footer .footer-right { font-size: 13px; color: var(--muted); }
 
 /* ===== Responsive ===== */
 @media (max-width: 960px) {
-    header { padding: 0 14px; gap: 10px; }
+    header { padding: 0 var(--gutter); gap: 10px; }
     .section { padding: 40px 16px; }
 }
 
 @media (max-width: 600px) {
-    :root { --header-h: 52px; }
-    .logo-link img, .logo-link svg { height: 36px; }
+    :root { --header-h: 56px; }
+    .logo-link img, .logo-link svg { height: 38px; }
     .cards-grid { grid-template-columns: 1fr; }
     .section-title { font-size: 1.25rem; }
     .btn-primary { height: 40px; font-size: 14px; padding: 0 18px; }
-    footer { flex-direction: column; text-align: center; gap: 6px; padding: 16px; }
+    footer { flex-direction: column; text-align: center; gap: 8px; padding: 18px var(--gutter); }
 }
