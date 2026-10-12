@@ -79,6 +79,7 @@
             z-index: 0;
             pointer-events: none;
             overflow: hidden;
+            perspective: 1000px;
         }
 
         .site-bg-img {
@@ -87,10 +88,14 @@
             object-fit: cover;
             object-position: right center;
             display: block;
+            transform: scale(1.07);
+            transform-origin: center center;
+            will-change: transform;
+            backface-visibility: hidden;
         }
 
         :root[data-theme=dark] .site-bg-img {
-            filter: brightness(0.72) contrast(1.08);
+            filter: brightness(0.85) contrast(1.05);
         }
 
         .site-bg-overlay {
@@ -385,6 +390,81 @@
     </footer>
 
     <script src="assets/main.js" defer></script>
+    <script>
+        (function () {
+            // Smooth cursor-following 3D parallax for background artwork
+            var bgImg = document.querySelector('.site-bg-img');
+            if (!bgImg) return;
+
+            // Respect user preference for reduced motion
+            if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                return;
+            }
+
+            var targetX = 0, targetY = 0;
+            var currentX = 0, currentY = 0;
+            var targetRotX = 0, targetRotY = 0;
+            var currentRotX = 0, currentRotY = 0;
+            var isMoving = false;
+            var rafId = null;
+
+            // Physics tuning for luxurious, weighted cinematic float
+            var LERP = 0.055;
+            var MAX_OFFSET_X = 26; // pixels
+            var MAX_OFFSET_Y = 16; // pixels
+            var MAX_ROT_X = 2.2;   // degrees
+            var MAX_ROT_Y = 3.2;   // degrees
+
+            function onMouseMove(e) {
+                var width = window.innerWidth;
+                var height = window.innerHeight;
+                if (!width || !height) return;
+
+                var normX = (e.clientX / width) - 0.5;
+                var normY = (e.clientY / height) - 0.5;
+
+                // Subtle inverse displacement creates 3D depth perception
+                targetX = -normX * MAX_OFFSET_X;
+                targetY = -normY * MAX_OFFSET_Y;
+                targetRotX = normY * MAX_ROT_X;
+                targetRotY = -normX * MAX_ROT_Y;
+
+                if (!isMoving) {
+                    isMoving = true;
+                    rafId = requestAnimationFrame(update);
+                }
+            }
+
+            function onMouseLeave() {
+                targetX = 0;
+                targetY = 0;
+                targetRotX = 0;
+                targetRotY = 0;
+            }
+
+            function update() {
+                currentX += (targetX - currentX) * LERP;
+                currentY += (targetY - currentY) * LERP;
+                currentRotX += (targetRotX - currentRotX) * LERP;
+                currentRotY += (targetRotY - currentRotY) * LERP;
+
+                bgImg.style.transform =
+                    'scale(1.07) translate3d(' + currentX.toFixed(2) + 'px, ' + currentY.toFixed(2) + 'px, 0) ' +
+                    'rotateX(' + currentRotX.toFixed(2) + 'deg) rotateY(' + currentRotY.toFixed(2) + 'deg)';
+
+                var delta = Math.abs(targetX - currentX) + Math.abs(targetY - currentY) +
+                            Math.abs(targetRotX - currentRotX) + Math.abs(targetRotY - currentRotY);
+                if (delta > 0.01) {
+                    rafId = requestAnimationFrame(update);
+                } else {
+                    isMoving = false;
+                }
+            }
+
+            window.addEventListener('mousemove', onMouseMove, { passive: true });
+            document.addEventListener('mouseleave', onMouseLeave);
+        })();
+    </script>
 </body>
 
 </html>
