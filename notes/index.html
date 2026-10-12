@@ -52,10 +52,31 @@
 
     <!-- ===== Page-specific styles ===== -->
     <style>
+        html {
+            height: 100%;
+        }
+
+        body,
+        [data-barba="wrapper"],
+        .barba-page {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            flex: 1 0 auto;
+            width: 100%;
+        }
+
         main {
             padding-top: var(--header-h);
             display: flex;
             flex-direction: column;
+            flex: 1 0 auto;
+        }
+
+        footer {
+            margin-top: auto;
+            flex-shrink: 0;
+            width: 100%;
         }
 
         /* ── Unified Directory Layout ── */
@@ -361,7 +382,9 @@
     </script>
 </head>
 
-<body>
+<body data-barba="wrapper">
+    <div id="barba-progress" aria-hidden="true"></div>
+    <div data-barba="container" data-barba-namespace="directory" class="barba-page">
     <a class="skip" href="#main">Skip to main content</a>
 
     <!-- ===== Header ===== -->
@@ -616,8 +639,87 @@
                     search.focus();
                 }
             });
+
+            /* Scroll-up at top -> Slide out to right and return to Home */
+            var notesContainer = document.querySelector('[data-barba-namespace="directory"]') || document.querySelector('.barba-page');
+            try {
+                if (sessionStorage.getItem('page_transition') === 'home_to_notes') {
+                    sessionStorage.removeItem('page_transition');
+                    if (notesContainer) {
+                        notesContainer.classList.add('slide-in-from-right');
+                    }
+                }
+            } catch (e) { }
+
+            var hasLeft = false;
+            var touchStartY = 0;
+            var coolDownUntil = Date.now() + 450;
+
+            function goHome() {
+                if (hasLeft) return;
+                if (Date.now() < coolDownUntil) return;
+                hasLeft = true;
+
+                try {
+                    sessionStorage.setItem('page_transition', 'notes_to_home');
+                } catch (e) { }
+
+                if (notesContainer) {
+                    notesContainer.classList.add('slide-out-right');
+                }
+
+                if (typeof barba !== 'undefined' && window.location.protocol !== 'file:') {
+                    try {
+                        barba.go('../index.html');
+                        return;
+                    } catch (e) { }
+                }
+
+                setTimeout(function () {
+                    window.location.href = '../index.html';
+                }, 320);
+            }
+
+            // Scroll up when at top of page -> go back to Home
+            window.addEventListener('wheel', function (e) {
+                var scrollTop = window.pageYOffset || document.documentElement.scrollTop || 0;
+                if (scrollTop <= 10 && e.deltaY < -18) {
+                    goHome();
+                }
+            }, { passive: true });
+
+            // Touch swipe down when at top
+            window.addEventListener('touchstart', function (e) {
+                if (e.touches && e.touches.length > 0) {
+                    touchStartY = e.touches[0].clientY;
+                }
+            }, { passive: true });
+
+            window.addEventListener('touchmove', function (e) {
+                var scrollTop = window.pageYOffset || document.documentElement.scrollTop || 0;
+                if (scrollTop <= 10 && e.touches && e.touches.length > 0) {
+                    var diffY = e.touches[0].clientY - touchStartY;
+                    if (diffY > 40) {
+                        goHome();
+                    }
+                }
+            }, { passive: true });
+
+            // "← Home" link click
+            var homeLink = document.querySelector('nav a[href="../index.html"]');
+            if (homeLink) {
+                homeLink.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    goHome();
+                });
+            }
         })();
     </script>
+    </div>
+
+    <!-- ===== Barba.js & Page Transitions ===== -->
+    <script src="https://cdn.jsdelivr.net/npm/@barba/core"></script>
+    <script src="../assets/transitions.js"></script>
 </body>
 
 </html>

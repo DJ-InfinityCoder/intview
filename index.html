@@ -62,13 +62,25 @@
         }
 
         /* Layout — Single-screen landing with full-page backdrop */
-        body {
+        html {
+            height: 100%;
+        }
+
+        body,
+        [data-barba="wrapper"],
+        .barba-page {
             min-height: 100vh;
             display: flex;
             flex-direction: column;
+            flex: 1 0 auto;
+            width: 100%;
+        }
+
+        body {
             position: relative;
             background: var(--bg);
             overflow-x: hidden;
+            margin: 0;
         }
 
         /* ── Full-screen Ambient Backdrop ── */
@@ -134,20 +146,20 @@
             padding: 0 var(--home-gutter);
             display: flex;
             align-items: center;
-            justify-content: space-between;
-            gap: clamp(28px, 4.5vw, 64px);
+            justify-content: flex-start;
+            gap: clamp(36px, 5vw, 84px);
         }
 
         .hero-content {
-            flex: 1 1 480px;
+            flex: 0 1 580px;
             max-width: 580px;
             text-align: left;
             z-index: 2;
         }
 
         .hero-illustration {
-            flex: 1 1 440px;
-            max-width: 620px;
+            flex: 0 1 640px;
+            max-width: 660px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -158,10 +170,10 @@
         .hero-illustration::before {
             content: "";
             position: absolute;
-            inset: -12%;
+            inset: -14%;
             background: radial-gradient(
                 circle at 52% 48%,
-                rgba(121, 174, 245, 0.22) 0%,
+                rgba(121, 174, 245, 0.24) 0%,
                 rgba(121, 174, 245, 0.08) 45%,
                 transparent 72%
             );
@@ -181,7 +193,7 @@
 
         .hero-svg-img {
             width: 100%;
-            max-width: 580px;
+            max-width: 620px;
             height: auto;
             aspect-ratio: 800 / 600;
             display: block;
@@ -305,6 +317,12 @@
                 gap: 8px;
             }
         }
+
+        footer {
+            margin-top: auto;
+            flex-shrink: 0;
+            width: 100%;
+        }
     </style>
 
     <!-- ===== Structured Data ===== -->
@@ -332,7 +350,9 @@
     </script>
 </head>
 
-<body>
+<body data-barba="wrapper">
+    <div id="barba-progress" aria-hidden="true"></div>
+    <div data-barba="container" data-barba-namespace="home" class="barba-page">
     <a class="skip" href="#main">Skip to main content</a>
 
     <!-- Full-screen Ambient Backdrop -->
@@ -362,6 +382,7 @@
                         <a href="notes/index.html" class="btn-primary" id="cta-browse">Browse Notes →</a>
                         <a href="notes/index.html" class="btn" id="cta-explore">Explore Directory</a>
                     </div>
+         
                 </div>
 
                 <div class="hero-illustration" aria-hidden="true">
@@ -377,6 +398,106 @@
         <span class="footer-right">Curated for technical interview preparation</span>
     </footer>
 
+    <!-- Home scroll-to-notes detection -->
+    <script>
+        (function () {
+            'use strict';
+            var homeContainer = document.querySelector('[data-barba-namespace="home"]') || document.querySelector('.barba-page');
+            
+            // If arriving from notes page, play slide-in-from-left
+            try {
+                if (sessionStorage.getItem('page_transition') === 'notes_to_home') {
+                    sessionStorage.removeItem('page_transition');
+                    if (homeContainer) {
+                        homeContainer.classList.add('slide-in-from-left');
+                    }
+                }
+            } catch (e) { }
+
+            var hasTriggered = false;
+            var touchStartY = 0;
+            var coolDownUntil = Date.now() + 350;
+
+            function openNotes() {
+                if (hasTriggered) return;
+                if (Date.now() < coolDownUntil) return;
+                hasTriggered = true;
+
+                try {
+                    sessionStorage.setItem('page_transition', 'home_to_notes');
+                } catch (e) { }
+
+                if (homeContainer) {
+                    homeContainer.classList.add('slide-out-left');
+                }
+
+                if (typeof barba !== 'undefined' && window.location.protocol !== 'file:') {
+                    try {
+                        barba.go('notes/index.html');
+                        return;
+                    } catch (e) { }
+                }
+
+                setTimeout(function () {
+                    window.location.href = 'notes/index.html';
+                }, 320);
+            }
+
+            // Mouse wheel scroll down
+            window.addEventListener('wheel', function (e) {
+                if (e.deltaY > 15) {
+                    openNotes();
+                }
+            }, { passive: true });
+
+            // Touch swipe up / scroll down
+            window.addEventListener('touchstart', function (e) {
+                if (e.touches && e.touches.length > 0) {
+                    touchStartY = e.touches[0].clientY;
+                }
+            }, { passive: true });
+
+            window.addEventListener('touchmove', function (e) {
+                if (e.touches && e.touches.length > 0) {
+                    var diffY = touchStartY - e.touches[0].clientY;
+                    if (diffY > 30) {
+                        openNotes();
+                    }
+                }
+            }, { passive: true });
+
+            // Keyboard navigation
+            window.addEventListener('keydown', function (e) {
+                if (e.key === 'ArrowDown' || e.key === 'PageDown') {
+                    openNotes();
+                }
+            });
+
+            // Native scroll fallback
+            window.addEventListener('scroll', function () {
+                if (window.scrollY > 20) {
+                    openNotes();
+                }
+            }, { passive: true });
+
+            // CTA button clicks
+            var cta1 = document.getElementById('cta-browse');
+            var cta2 = document.getElementById('cta-explore');
+            [cta1, cta2].forEach(function (btn) {
+                if (btn) {
+                    btn.addEventListener('click', function (e) {
+                        e.preventDefault();
+                        openNotes();
+                    });
+                }
+            });
+        })();
+    </script>
+    </div>
+
+    <!-- ===== Barba.js & Page Transitions ===== -->
+    <script src="https://cdn.jsdelivr.net/npm/@barba/core"></script>
+    <script src="assets/transitions.js"></script>
     <script src="assets/main.js" defer></script>
 </body>
 

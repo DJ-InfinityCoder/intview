@@ -39,7 +39,10 @@
     scrollbar-color: var(--bd) transparent;
 }
 
-html { scroll-behavior: smooth; }
+html {
+    scroll-behavior: smooth;
+    height: 100%;
+}
 
 body {
     margin: 0;
@@ -52,8 +55,70 @@ body {
     flex-direction: column;
 }
 
+[data-barba="wrapper"] {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    flex: 1 0 auto;
+    width: 100%;
+}
+
+.barba-page,
+[data-barba="container"] {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    flex: 1 0 auto;
+    width: 100%;
+}
+
 main {
-    flex: 1;
+    flex: 1 0 auto;
+}
+
+/* ===== Horizontal Slide Animations (Home <-> Notes) ===== */
+.slide-out-left {
+    transform: translateX(-100vw) !important;
+    opacity: 0 !important;
+    transition: transform 0.38s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.32s ease !important;
+    pointer-events: none;
+}
+
+.slide-out-right {
+    transform: translateX(100vw) !important;
+    opacity: 0 !important;
+    transition: transform 0.38s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.32s ease !important;
+    pointer-events: none;
+}
+
+.slide-in-from-right {
+    animation: animSlideInRight 0.38s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes animSlideInRight {
+    0% {
+        transform: translateX(100vw);
+        opacity: 0;
+    }
+    100% {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+.slide-in-from-left {
+    animation: animSlideInLeft 0.38s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes animSlideInLeft {
+    0% {
+        transform: translateX(-100vw);
+        opacity: 0;
+    }
+    100% {
+        transform: translateX(0);
+        opacity: 1;
+    }
 }
 
 strong, b { font-weight: 500; }
