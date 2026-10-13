@@ -33,6 +33,14 @@
     <priority>0.8</priority>
   </url>
 
+  <!-- DBMS Interview Notes -->
+  <url>
+    <loc>https://intview.dilip.website/notes/dbms/dbms_interview.html</loc>
+    <lastmod>2026-10-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
   <!-- SQL Interview Notes -->
   <url>
     <loc>https://intview.dilip.website/notes/sql/sql_interview.html</loc>

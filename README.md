@@ -8,6 +8,7 @@ Curated technical interview notes and reference guides for software engineering 
 - **Topics Covered**:
   - C++ Interview Notes
   - Object-Oriented Programming (OOP) with C++
+  - Database Management Systems (DBMS)
   - SQL & Relational Databases
 - **Features**:
   - Dark / Light / System theme support

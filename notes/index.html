@@ -382,6 +382,11 @@
             },
             {
                 "@type": "Article",
+                "name": "DBMS Interview Notes",
+                "url": "https://intview.dilip.website/notes/dbms/dbms_interview.html"
+            },
+            {
+                "@type": "Article",
                 "name": "SQL Interview Notes",
                 "url": "https://intview.dilip.website/notes/sql/sql_interview.html"
             }
@@ -501,13 +506,14 @@
                 <button class="pill active" data-filter="all" id="pill-all" aria-pressed="true">All</button>
                 <button class="pill" data-filter="cpp" id="pill-cpp" aria-pressed="false">C++</button>
                 <button class="pill" data-filter="oops" id="pill-oops" aria-pressed="false">OOPs</button>
+                <button class="pill" data-filter="dbms" id="pill-dbms" aria-pressed="false">DBMS</button>
                 <button class="pill" data-filter="sql" id="pill-sql" aria-pressed="false">SQL</button>
             </div>
         </div>
 
         <!-- Cards -->
         <div class="dir-grid">
-            <p class="note-count" id="note-count" aria-live="polite" aria-atomic="true">Showing 3 notes</p>
+            <p class="note-count" id="note-count" aria-live="polite" aria-atomic="true">Showing 4 notes</p>
 
             <div class="cards-grid" id="cards-container" role="list" aria-label="Available notes">
 
@@ -540,6 +546,25 @@
                     <div class="card-title">OOPs with C++</div>
                     <div class="card-footer">
                         <span class="tag">OOPs</span>
+                        <span class="card-arrow" aria-hidden="true">Open →</span>
+                    </div>
+                </a>
+
+                <!-- DBMS -->
+                <a href="dbms/dbms_interview.html" class="card" role="listitem"
+                    data-tags="dbms database acid transactions normalization er relational indexing concurrency lock interview"
+                    aria-label="DBMS Interview Notes — open note">
+                    <div class="card-icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="2" y="2" width="20" height="8" rx="2" ry="2"/>
+                            <rect x="2" y="14" width="20" height="8" rx="2" ry="2"/>
+                            <line x1="6" y1="6" x2="6.01" y2="6"/>
+                            <line x1="6" y1="18" x2="6.01" y2="18"/>
+                        </svg>
+                    </div>
+                    <div class="card-title">DBMS Interview Notes</div>
+                    <div class="card-footer">
+                        <span class="tag">DBMS</span>
                         <span class="card-arrow" aria-hidden="true">Open →</span>
                     </div>
                 </a>
