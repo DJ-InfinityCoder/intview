@@ -66,8 +66,7 @@
             height: 100%;
         }
 
-        body,
-        [data-barba="wrapper"] {
+        body {
             min-height: 100vh;
             display: flex;
             flex-direction: column;
@@ -75,14 +74,6 @@
             background: var(--bg);
             overflow-x: hidden;
             margin: 0;
-            width: 100%;
-        }
-
-        .barba-page {
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            flex: 1 0 auto;
             width: 100%;
         }
 
@@ -359,9 +350,7 @@
     </script>
 </head>
 
-<body data-barba="wrapper">
-    <div id="barba-progress" aria-hidden="true"></div>
-    <div data-barba="container" data-barba-namespace="home" class="barba-page">
+<body>
     <a class="skip" href="#main">Skip to main content</a>
 
     <!-- Full-screen Ambient Backdrop -->
@@ -410,12 +399,9 @@
             <span class="footer-right">Curated for technical interview preparation</span>
         </div>
     </footer>
-    </div>
 
-    <!-- ===== Barba.js & Page Transitions ===== -->
-    <script src="https://cdn.jsdelivr.net/npm/@barba/core"></script>
-    <script src="assets/transitions.js"></script>
     <script src="assets/main.js" defer></script>
+    <script src="assets/transitions.js" defer></script>
 </body>
 
 </html>

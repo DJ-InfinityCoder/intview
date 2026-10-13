@@ -56,21 +56,12 @@
             height: 100%;
         }
 
-        body,
-        [data-barba="wrapper"] {
+        body {
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             width: 100%;
             margin: 0;
-        }
-
-        .barba-page {
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            flex: 1 0 auto;
-            width: 100%;
         }
 
         main {
@@ -395,9 +386,7 @@
     </script>
 </head>
 
-<body data-barba="wrapper">
-    <div id="barba-progress" aria-hidden="true"></div>
-    <div data-barba="container" data-barba-namespace="directory" class="barba-page">
+<body>
     <a class="skip" href="#main">Skip to main content</a>
 
     <!-- ===== Header ===== -->
@@ -677,11 +666,6 @@
             });
         })();
     </script>
-    </div>
-
-    <!-- ===== Barba.js & Page Transitions ===== -->
-    <script src="https://cdn.jsdelivr.net/npm/@barba/core"></script>
-    <script src="../assets/transitions.js"></script>
 </body>
 
 </html>
