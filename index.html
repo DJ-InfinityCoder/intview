@@ -67,20 +67,23 @@
         }
 
         body,
-        [data-barba="wrapper"],
+        [data-barba="wrapper"] {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            background: var(--bg);
+            overflow-x: hidden;
+            margin: 0;
+            width: 100%;
+        }
+
         .barba-page {
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             flex: 1 0 auto;
             width: 100%;
-        }
-
-        body {
-            position: relative;
-            background: var(--bg);
-            overflow-x: hidden;
-            margin: 0;
         }
 
         /* ── Full-screen Ambient Backdrop ── */
@@ -112,7 +115,7 @@
             height: var(--header-h);
             background: transparent;
             border-bottom: none;
-            padding: 0 var(--home-gutter);
+            padding: 0;
             z-index: 20;
             display: flex;
             align-items: center;
@@ -124,42 +127,48 @@
 
         /* ── Main & Hero ── */
         main {
-            flex: 1;
+            flex: 1 0 auto;
             display: flex;
             flex-direction: column;
             justify-content: center;
+            align-items: center;
             padding-top: var(--header-h);
             position: relative;
             z-index: 2;
+            width: 100%;
         }
 
         .hero {
             width: 100%;
             display: flex;
             align-items: center;
+            justify-content: center;
             background: transparent;
             padding: 32px 0;
         }
 
         .hero-container {
             width: 100%;
-            padding: 0 var(--home-gutter);
+            max-width: var(--max-w-6xl);
+            margin: 0 auto;
+            padding: 0 var(--gutter);
             display: flex;
             align-items: center;
-            justify-content: flex-start;
-            gap: clamp(36px, 5vw, 84px);
+            justify-content: space-between;
+            gap: clamp(36px, 5vw, 64px);
+            box-sizing: border-box;
         }
 
         .hero-content {
-            flex: 0 1 580px;
-            max-width: 580px;
+            flex: 1 1 520px;
+            max-width: 540px;
             text-align: left;
             z-index: 2;
         }
 
         .hero-illustration {
-            flex: 0 1 640px;
-            max-width: 660px;
+            flex: 1 1 560px;
+            max-width: 620px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -360,9 +369,11 @@
 
     <!-- ===== Header ===== -->
     <header>
-        <a class="logo-link" href="index.html" aria-label="intview — home">
-            <img src="assets/logo.png" alt="intview" height="48">
-        </a>
+        <div class="header-inner">
+            <a class="logo-link" href="index.html" aria-label="intview — home">
+                <img src="assets/logo.png" alt="intview" height="48">
+            </a>
+        </div>
     </header>
 
     <!-- ===== Main Content ===== -->
@@ -394,105 +405,11 @@
     </main>
 
     <footer>
-        <span class="footer-left">© 2026 <strong>intview</strong> · <a href="https://intview.dilip.website">dilip.website</a></span>
-        <span class="footer-right">Curated for technical interview preparation</span>
+        <div class="footer-inner">
+            <span class="footer-left">© 2026 <strong>intview</strong> · <a href="https://intview.dilip.website">dilip.website</a></span>
+            <span class="footer-right">Curated for technical interview preparation</span>
+        </div>
     </footer>
-
-    <!-- Home scroll-to-notes detection -->
-    <script>
-        (function () {
-            'use strict';
-            var homeContainer = document.querySelector('[data-barba-namespace="home"]') || document.querySelector('.barba-page');
-            
-            // If arriving from notes page, play slide-in-from-left
-            try {
-                if (sessionStorage.getItem('page_transition') === 'notes_to_home') {
-                    sessionStorage.removeItem('page_transition');
-                    if (homeContainer) {
-                        homeContainer.classList.add('slide-in-from-left');
-                    }
-                }
-            } catch (e) { }
-
-            var hasTriggered = false;
-            var touchStartY = 0;
-            var coolDownUntil = Date.now() + 350;
-
-            function openNotes() {
-                if (hasTriggered) return;
-                if (Date.now() < coolDownUntil) return;
-                hasTriggered = true;
-
-                try {
-                    sessionStorage.setItem('page_transition', 'home_to_notes');
-                } catch (e) { }
-
-                if (homeContainer) {
-                    homeContainer.classList.add('slide-out-left');
-                }
-
-                if (typeof barba !== 'undefined' && window.location.protocol !== 'file:') {
-                    try {
-                        barba.go('notes/index.html');
-                        return;
-                    } catch (e) { }
-                }
-
-                setTimeout(function () {
-                    window.location.href = 'notes/index.html';
-                }, 320);
-            }
-
-            // Mouse wheel scroll down
-            window.addEventListener('wheel', function (e) {
-                if (e.deltaY > 15) {
-                    openNotes();
-                }
-            }, { passive: true });
-
-            // Touch swipe up / scroll down
-            window.addEventListener('touchstart', function (e) {
-                if (e.touches && e.touches.length > 0) {
-                    touchStartY = e.touches[0].clientY;
-                }
-            }, { passive: true });
-
-            window.addEventListener('touchmove', function (e) {
-                if (e.touches && e.touches.length > 0) {
-                    var diffY = touchStartY - e.touches[0].clientY;
-                    if (diffY > 30) {
-                        openNotes();
-                    }
-                }
-            }, { passive: true });
-
-            // Keyboard navigation
-            window.addEventListener('keydown', function (e) {
-                if (e.key === 'ArrowDown' || e.key === 'PageDown') {
-                    openNotes();
-                }
-            });
-
-            // Native scroll fallback
-            window.addEventListener('scroll', function () {
-                if (window.scrollY > 20) {
-                    openNotes();
-                }
-            }, { passive: true });
-
-            // CTA button clicks
-            var cta1 = document.getElementById('cta-browse');
-            var cta2 = document.getElementById('cta-explore');
-            [cta1, cta2].forEach(function (btn) {
-                if (btn) {
-                    btn.addEventListener('click', function (e) {
-                        e.preventDefault();
-                        openNotes();
-                    });
-                }
-            });
-        })();
-    </script>
     </div>
 
     <!-- ===== Barba.js & Page Transitions ===== -->
