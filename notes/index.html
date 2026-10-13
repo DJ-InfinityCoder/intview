@@ -48,7 +48,7 @@
     </script>
 
     <!-- ===== Shared CSS ===== -->
-    <link rel="stylesheet" href="../assets/style.css">
+    <link rel="stylesheet" href="../assets/style.css?v=2">
 
     <!-- ===== Page-specific styles ===== -->
     <style>
@@ -69,6 +69,181 @@
             padding-top: var(--header-h);
             display: flex;
             flex-direction: column;
+        }
+
+        /* ── Header ── */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: var(--header-h);
+            display: flex;
+            align-items: center;
+            background: var(--bg);
+            border-bottom: 1px solid var(--bd);
+            z-index: 20;
+            padding: 0;
+        }
+
+        .header-inner {
+            width: 100%;
+            max-width: var(--max-w-6xl);
+            margin: 0 auto;
+            padding: 0 var(--gutter);
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            height: 100%;
+            box-sizing: border-box;
+        }
+
+        .logo-link {
+            display: inline-flex;
+            align-items: center;
+            text-decoration: none;
+            flex-shrink: 0;
+        }
+
+        .logo-link img {
+            height: 48px;
+            width: auto;
+            display: block;
+            transition: filter 0.2s;
+        }
+
+        :root[data-theme=dark] .logo-link img {
+            filter: invert(1) hue-rotate(180deg);
+        }
+
+        header .grow {
+            flex: 1;
+        }
+
+        .nav-link {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--muted);
+            text-decoration: none;
+            transition: color 0.15s;
+            white-space: nowrap;
+            padding: 5px 8px;
+            border-radius: 4px;
+        }
+
+        .nav-link:hover {
+            color: var(--text);
+        }
+
+        /* ── Theme Toggle & Dropdown ── */
+        .theme-wrap {
+            position: relative;
+            flex-shrink: 0;
+        }
+
+        .theme-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            padding: 0;
+            color: var(--text);
+            background: var(--bg);
+            border: 1px solid var(--bd);
+            border-radius: var(--radius);
+            cursor: pointer;
+            transition: background 0.15s, border-color 0.15s;
+        }
+
+        .theme-btn:hover {
+            background: var(--code);
+            border-color: var(--muted);
+        }
+
+        .theme-btn svg {
+            width: 18px;
+            height: 18px;
+            display: block;
+        }
+
+        .theme-dropdown {
+            position: absolute;
+            top: calc(100% + 8px);
+            right: 0;
+            width: 158px;
+            background: var(--bg);
+            border: 1px solid var(--bd);
+            border-radius: var(--radius);
+            padding: 6px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+            z-index: 50;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .theme-dropdown[hidden] {
+            display: none;
+        }
+
+        .theme-option {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            width: 100%;
+            padding: 7px 10px;
+            border: 0;
+            background: transparent;
+            color: var(--text);
+            font: inherit;
+            font-size: 13.5px;
+            border-radius: 4px;
+            cursor: pointer;
+            text-align: left;
+            transition: background 0.12s;
+        }
+
+        .theme-option:hover {
+            background: var(--code);
+        }
+
+        .theme-opt-icon {
+            width: 16px;
+            height: 16px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .theme-opt-icon.sun {
+            color: #d97706;
+        }
+
+        .theme-opt-icon.moon {
+            color: #0284c7;
+        }
+
+        .theme-opt-icon.system {
+            color: var(--muted);
+        }
+
+        .theme-opt-text {
+            flex: 1;
+        }
+
+        .theme-opt-check {
+            width: 14px;
+            height: 14px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            color: var(--link);
+        }
+
+        .theme-option.active .theme-opt-check {
+            opacity: 1;
         }
 
         /* ── Unified Directory Layout ── */
@@ -601,7 +776,7 @@
     </footer>
 
     <!-- Shared JS (theme, scroll) -->
-    <script src="../assets/main.js" defer></script>
+    <script src="../assets/main.js?v=2" defer></script>
 
     <!-- Page-specific: Search & Filter -->
     <script>
