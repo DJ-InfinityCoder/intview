@@ -5,6 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>SQL Interview Notes</title>
+    <link rel="stylesheet" href="../../assets/note-pagination.css">
     <!-- ===== Favicon ===== -->
     <link rel="icon" type="image/svg+xml" href="../../assets/favicon.svg">
     <link rel="alternate icon" href="../../assets/logo.png">
@@ -3923,6 +3924,9 @@ ORDER BY RestaurantID, rn;</code></pre></div>
 <p>I used <code>ROW_NUMBER()</code> to return at most three dishes per restaurant. The secondary ordering by <code>DishName</code> makes ties deterministic.</p>
 <p>If the requirement is to include every dish tied within the top three ranks, use <code>RANK()</code> or <code>DENSE_RANK()</code> instead.</p>
 </section></section>
+            <nav class="note-pagination" aria-label="SQL notes pagination">
+                <a href="sql_interview2.html" rel="next">Next: SQL Notes, Part 2 →</a>
+            </nav>
         </article>
     </main>
     <button id="to-top" class="btn" aria-label="Scroll to top" title="Scroll to top">

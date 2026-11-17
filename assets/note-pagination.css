@@ -1,0 +1,18 @@
+.note-pagination {
+    display: flex;
+    gap: 1rem;
+    margin-top: 2rem;
+    padding-block: 1rem;
+    border-top: 1px solid var(--bd);
+}
+
+.note-pagination a {
+    padding: 0.5rem 0.75rem;
+    border: 1px solid var(--bd);
+    border-radius: 0.5rem;
+    font-weight: 600;
+}
+
+.note-pagination a[rel="next"] {
+    margin-inline-start: auto;
+}
