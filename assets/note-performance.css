@@ -1,0 +1,6 @@
+@media screen {
+    section.q {
+        content-visibility: auto;
+        contain-intrinsic-block-size: auto 480px;
+    }
+}
